@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" style="min-width: 600px">
+  <!-- min-height: 600px"> -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VTTA Extension Popup</title>
+    <link rel="stylesheet" href="/assets/libs/semantic/semantic.min.css" />
+    <style>
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+  </head>
+  <body style="overflow: hidden">
+    <div
+      class="ui container-fluid"
+      style="display: flex; flex-direction: column; height: 100%"
+    >
+      <div class="ui inverted borderless menu" style="min-height: 63px">
+        <a class="active item"
+          ><img src="/assets/icons/vtta.io-s-32x32.png" />
+        </a>
+        <a class="item"
+          ><div class="ui" id="profile-environment" data-position="bottom left">
+            <img
+              style="width: 35px; height: 35px"
+              src="/assets/icons/icon-env-local-48x48.png"
+            /></div
+        ></a>
+
+        <div class="item" id="profile-name"></div>
+        <!--<div class="item" id="profile-email"></div> -->
+        <!--<div class="item" id="profile-isSupporter"></div> -->
+
+        <div class="item right" style="padding-right: 0px">
+          <button id="cancel-batch" class="tiny ui gray button">
+            <i class="cancel icon"></i>Batch
+          </button>
+        </div>
+
+        <div class="item right" style="margin-left: 0px !important">
+          <button id="connect-fvtt" class="ui button">
+            <i class="icon circle"></i> FVTT
+          </button>
+        </div>
+      </div>
+      <div class="ui container" style="flex-grow: 1">
+        <div id="content">
+          <div id="message"></div>
+        </div>
+      </div>
+      <!--<div class="ui inverted borderless mini menu bottom attached">
+        <div class="item">
+          <button id="open-options" class="mini ui blue button">
+            <i class="cog icon"></i> Options
+          </button>
+        </div>
+
+        <div class="item">
+          <button id="profile-clear" class="mini ui button red">
+            <i class="icon trash"></i>Clear Profile
+          </button>
+        </div>
+
+        <div class="item" id="batch-status"></div>
+      </div>-->
+    </div>
+
+    <script src="/assets/libs/jquery/jquery-3.5.1.min.js"></script>
+    <script src="/assets/libs/semantic/semantic.min.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

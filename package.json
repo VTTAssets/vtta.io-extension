@@ -1,0 +1,47 @@
+{
+  "name": "vtta.io-extension-mv3",
+  "version": "3.0.1",
+  "description": "D&D Beyond Integration MV3",
+  "main": "src/index.js",
+  "author": "Sebastian Will <vttassets@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "version": "node ./.bin/syncVersion",
+    "createPackages": "node ./.bin/createPackages",
+    "dev": "webpack --mode production --config webpack.dev.config.js --watch",
+    "dist:chrome": "webpack --mode production --config webpack.prod-chrome.config.js",
+    "dist:edge": "webpack --mode production --config webpack.prod-edge.config.js",
+    "dist": "run-s version dist:chrome dist:edge createPackages"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/preset-env": "^7.14.8",
+    "@types/chrome": "^0.0.148",
+    "@types/jquery": "^3.5.6",
+    "archiver": "^5.3.0",
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.2.2",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "npm-run-all": "^4.1.5",
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.3.5",
+    "webpack": "^5.45.1",
+    "webpack-cli": "^4.7.2",
+    "yarn-upgrade-all": "^0.5.4"
+  },
+  "browserslist": {
+    "chrome": "58"
+  },
+  "dependencies": {
+    "@types/minimatch": "^3.0.5",
+    "core-js": "^3.15.2",
+    "immer": "^9.0.5",
+    "regenerator-runtime": "^0.13.7",
+    "showdown": "^1.9.1",
+    "turndown": "^7.1.1",
+    "turndown-plugin-gfm": "^1.0.2"
+  }
+}

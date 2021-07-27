@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "typeRoots": ["@types", "./node_modules/@types"],
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "paths": {
+      "Browser/*": ["browser/*"],
+      "Config/*": ["config/*"],
+      "Content/*": ["content/*"],
+      "Utilities/*": ["utilities/*"]
+    },
+    "lib": ["dom", "ES6", "ES2020"]
+  },
+  "include": ["src/**/*", "@types/index.d.ts"]
+}

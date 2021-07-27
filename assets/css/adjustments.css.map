@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,UAAU,GAAG,MAAM,AAAA,YAAY,GAAG,GAAG,AAAA,qBAAqB,GAAG,GAAG,GAAG,GAAG,CAAC;EACrE,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,aAAa;CAC/B",
+    "sources": [
+        "adjustments.scss"
+    ],
+    "names": [],
+    "file": "adjustments.css"
+}

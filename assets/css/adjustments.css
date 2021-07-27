@@ -1,0 +1,9 @@
+#site-main > header.page-header > div.page-header__primary > div > div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+/*# sourceMappingURL=adjustments.css.map */

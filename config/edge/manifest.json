@@ -1,0 +1,161 @@
+{
+   "manifest_version": 3,
+   "name": "VTTA.io D&D Beyond Integration",
+   "version": "3.0.1",
+   "description": "Integrate your licensed content from D&D Beyond into your running Foundry VTT Dungeons & Dragons session.",
+   "icons": {
+      "32": "assets/icons/vtta.io-s-32x32.png",
+      "38": "assets/icons/vtta.io-s-38x38.png",
+      "64": "assets/icons/vtta.io-s-64x64.png",
+      "128": "assets/icons/vtta.io-s-128x128.png"
+   },
+   "action": {
+      "default_icon": {
+         "32": "assets/icons/vtta.io-s-32x32.png",
+         "38": "assets/icons/vtta.io-s-38x38.png",
+         "64": "assets/icons/vtta.io-s-64x64.png",
+         "128": "assets/icons/vtta.io-s-128x128.png"
+      },
+      "default_title": "Click Me",
+      "default_popup": "browser/popup/index.html"
+   },
+   "author": "Sebastian Will",
+   "background": {
+      "service_worker": "sw.js"
+   },
+   "content_scripts": [
+      {
+         "matches": [
+            "https://www.dndbeyond.com/monsters*",
+            "https://www.dndbeyond.com/monsters?page=*",
+            "https://www.dndbeyond.com/magic-items*",
+            "https://www.dndbeyond.com/magic-items?page=*",
+            "https://www.dndbeyond.com/spells*",
+            "https://www.dndbeyond.com/spells?page=*",
+            "https://www.dndbeyond.com/spells/school/*",
+            "https://www.dndbeyond.com/spells/class/*",
+            "https://www.dndbeyond.com/equipment*",
+            "https://www.dndbeyond.com/equipment?page=*",
+            "https://www.dndbeyond.com/encounter-builder*"
+         ],
+         "js": [
+            "assets/libs/jquery/jquery-3.5.1.min.js",
+            "assets/libs/jquery/jquery.adjustments.js",
+            "content/dndbeyond.com/listing.js"
+         ],
+         "css": [
+            "assets/css/status.min.css",
+            "assets/css/adjustments.min.css"
+         ],
+         "run_at": "document_idle"
+      },
+      {
+         "matches": [
+            "https://www.dndbeyond.com/monsters/*",
+            "https://www.dndbeyond.com/magic-items/*",
+            "https://www.dndbeyond.com/spells/*",
+            "https://www.dndbeyond.com/equipment/*"
+         ],
+         "js": [
+            "assets/libs/jquery/jquery-3.5.1.min.js",
+            "assets/libs/jquery/jquery.adjustments.js",
+            "content/dndbeyond.com/detail.js"
+         ],
+         "css": [
+            "assets/css/status.min.css"
+         ],
+         "run_at": "document_idle"
+      },
+      {
+         "matches": [
+            "https://www.dndbeyond.com/encounter-builder"
+         ],
+         "js": [
+            "assets/libs/jquery/jquery-3.5.1.min.js",
+            "assets/libs/jquery/jquery.adjustments.js",
+            "content/dndbeyond.com/encounterBuilder/builder.js"
+         ],
+         "css": [
+            "assets/css/status.min.css",
+            "assets/css/adjustments.min.css"
+         ],
+         "run_at": "document_idle"
+      },
+      {
+         "matches": [
+            "https://www.dndbeyond.com/sources/*"
+         ],
+         "js": [
+            "assets/libs/jquery/jquery-3.5.1.min.js",
+            "assets/libs/jquery/jquery.adjustments.js",
+            "content/dndbeyond.com/sources/toc.js"
+         ],
+         "css": [
+            "assets/css/status.min.css"
+         ],
+         "run_at": "document_idle"
+      },
+      {
+         "matches": [
+            "https://www.dndbeyond.com/sources/*"
+         ],
+         "js": [
+            "assets/libs/jquery/jquery-3.5.1.min.js",
+            "assets/libs/jquery/jquery.adjustments.js",
+            "content/dndbeyond.com/sources/page.js"
+         ],
+         "css": [
+            "assets/css/status.min.css"
+         ],
+         "run_at": "document_idle"
+      },
+      {
+         "matches": [
+            "https://www.dndbeyond.com/marketplace/*"
+         ],
+         "js": [
+            "assets/libs/jquery/jquery-3.5.1.min.js",
+            "assets/libs/jquery/jquery.adjustments.js",
+            "content/dndbeyond.com/marketplace.js"
+         ],
+         "css": [
+            "assets/css/status.min.css"
+         ],
+         "run_at": "document_idle"
+      }
+   ],
+   "externally_connectable": {
+      "matches": [
+         "https://*.vtta.dev/user/profile",
+         "https://*.vtta.io/user/profile",
+         "https://vttassets.eu.ngrok.io/user/profile"
+      ]
+   },
+   "homepage_url": "https://www.vtta.io",
+   "host_permissions": [],
+   "incognito": "split",
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAseSZSjOspz7Sk4iRyoleWDrsX7+iYr61r1St1lMjrIojT1MnZNjMKIOzol013Mpbu418/T7gw7pD4pc1Sf2GuZpNJ08Crl6026ztuZHd+VB8xRG4t+xdy2G728MzXtw3v2BbkCyfaQ0JvhHz/xT8KYwmqkOYyTR3LWzfJIM+fWr5QuL3XJI9pxVAKpddg0/xHD4kzSpBUavzwIBhRlHBxNca/cqMfE6jjsXfx0Bsr2aSLTcGlCtSO9BIUdH6xHX1Y21yNTAczvOtTxywT8WIWvSdZdx581qIOJqSwgSV2jIp4ZpgL6o+cG+qnc65o+Qul6t75/0HutOvL/NkLb0kRQIDAQAB",
+   "offline_enabled": false,
+   "optional_permissions": [
+      "tabs"
+   ],
+   "permissions": [
+      "activeTab",
+      "storage",
+      "scripting"
+   ],
+   "short_name": "VTTA.io DDB",
+   "web_accessible_resources": [
+      {
+         "resources": [
+            "assets/icons/*.png",
+            "assets/icons/*.svg",
+            "assets/img/position-chrome-tabs.gif",
+            "assets/css/*.css"
+         ],
+         "matches": [
+            "https://www.dndbeyond.com/*"
+         ]
+      }
+   ]
+}
