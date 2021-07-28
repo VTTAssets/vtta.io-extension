@@ -136,9 +136,6 @@
    "incognito": "split",
    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAytSaZ5gNqsm/J35cOcVuU0NWt+LA830RT7Hn0Ub0Wt2F9588ffdSnavLCifGrWtpSVtK15nwqG+4nYrRCrA1Unw4LrQT8oAOxfTVsGUB7PFBqmTR2t8+qsaVhndLVx2fccBRZkW/j13xoePO6DXKS0Cmk0z9sd8C4pDJm9palp/LSNU+YNaURZ1XQHLcUuv/JOeh3Dm2AcFJ4qCy+P+TsQd0ZVY+GcJppGIMrLu3bOflMbFzYbLvsrMLoEdAfNRUznNnlvMHoDQKVHbb6k4YbjIVZiG6+wa/rm7dDuFp1GydBeKkNqQK2knXVsbpwFB3n3U52J2pCQvxBopwnti6jwIDAQAB",
    "offline_enabled": false,
-   "optional_permissions": [
-      "tabs"
-   ],
    "permissions": [
       "activeTab",
       "storage",

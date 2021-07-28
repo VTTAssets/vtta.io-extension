@@ -11,6 +11,43 @@ import Note from "./ui/note";
 console.log("[POPUP] Initializing...");
 
 const init = async () => {
+  /**
+   * Displaying user information and environment information
+   */
+  const { user, environment } = await Storage.sync.get(["user", "environment"]);
+
+  // Display the current user's information
+  $("#profile-name").empty();
+
+  // we do have a valid user
+  if (user && user.name) {
+    $("#profile-name").prepend(
+      `<i class="patreon icon" style="color: ${
+        user.isPatron ? "orange" : "gray"
+      }" ></i> ${user.name}`
+    );
+
+    $("#profile-clear").show();
+  } else {
+    // there is no user connected yet
+    $("#profile-name").prepend(
+      `<i class="patreon icon" style="color:gray"> </i> No user connected`
+    );
+    $("#profile-clear").hide();
+
+    Note.display(
+      "warning",
+      "No user connected",
+      `
+    <p>You have no user connected. Unless you are running your own image proxy, <b>all image downloads from D&amp;D Beyond will fail</b>, resulting in <b>monsters having no artworks and source book/ adventure 
+    module imports not completing successfully at all</b>.</p>
+    <p>Our <b><a href="https://www.vtta.io/articles/getting-started#step-2-account">Getting Started</a> Guide</b> will help you on your first steps.</p>
+    <p><b>Data protection is important</b> and we collect only the bare minimum of personal details. Our <a href="https://www.vtta.io/privacy-policy">Privacy Policy</a> details what kind of data is stored about you, and why. <b>Unless you create a VTTA.io account and connect it to the browser extension, no data is collected at all.</b></p>
+    `,
+      null
+    );
+  }
+
   /** Signaling the pressing of the action button to the service worker */
   const message: Message = {
     type: CONFIG.messages.ACTION,
@@ -54,44 +91,6 @@ const init = async () => {
   });
 
   /**
-   * Displaying user information and environment information
-   */
-  const { user, environment } = await Storage.sync.get(["user", "environment"]);
-
-  // Display the current user's information
-  $("#profile-name").empty();
-
-  // we do have a valid user
-  if (user && user.name) {
-    $("#profile-name").prepend(
-      `<i class="patreon icon" style="color: ${
-        user.isPatron ? "orange" : "gray"
-      }" ></i> ${user.name}`
-    );
-
-    $("#profile-clear").show();
-  } else {
-    // there is no user connected yet
-    $("#profile-name").prepend(
-      `<i class="patreon icon" style="color:gray"> </i> No user connected`
-    );
-    $("#profile-clear").hide();
-
-    Note.display(
-      "warning",
-      "No user connected",
-      `
-    <p>You have no user connected. Unless you are running your own image proxy, <b>all image downloads from D&amp;D Beyond will fail</b>, resulting in <b>monsters having no artworks and source book/ adventure 
-    module imports not completing successfully at all</b>. Read more in the <a href="https://www.vtta.io/articles/getting-started#step-2-account">"Getting Started" guide</a> or simply:</p>
-    <ul>
-    <li>Go to <a href="https://www.vtta.io">vtta.io</a> and login with your Google account</li>
-    <li>Visit your user profile, a success message will appear after a short delay, indicating that the connection is now established. </li>
-    </ul>`,
-      null
-    );
-  }
-
-  /**
    * Clearing the stored user profile
    */
   $("#profile-clear").on("click", () => {
@@ -104,31 +103,6 @@ const init = async () => {
    */
 
   updateEnvironmentInformation(environment);
-  // let env = CONFIG.environments.find((env) => env.name === environment);
-  // if (env === undefined) {
-  //   $("#profile-environment")
-  //     .find("img")
-  //     .attr(
-  //       "src",
-  //       chrome.runtime.getURL("/assets/icons/icon-env-unconfigured-48x48.png")
-  //     );
-  //   $("#profile-environment").attr(
-  //     "data-tooltip",
-  //     "Connecting a user sets a valid parser environment"
-  //   );
-  //   $("#profile-environment").on("click", (event) => {
-  //     console.log("Clicked on the environment button");
-  //   });
-  // } else {
-  //   $("#profile-environment")
-  //     .find("img")
-  //     .attr("src", chrome.runtime.getURL(env.icon));
-  //   $("#profile-environment").attr("data-tooltip", env.description);
-
-  //   $("#profile-environment").on("click", (event) => {
-  //     console.log("Clicked on the environment button");
-  //   });
-  // }
 
   /**
    * Is there currently a batch running? Allow the user to cancel it

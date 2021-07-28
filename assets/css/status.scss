@@ -135,7 +135,7 @@ div.vtta.statusBar {
 
       .message.note {
         border-radius: 5px;
-        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/noun_Info_223370.svg);
+        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-info.svg);
         background-color: rgb(194, 194, 0);
         color: black;
         padding: 10px;
@@ -148,7 +148,7 @@ div.vtta.statusBar {
 
       .message.error {
         border-radius: 5px;
-        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/noun_Warning_3677487.svg);
+        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-error.svg);
         background-color: #b00000;
         color: white;
         font-weight: bold;
@@ -163,7 +163,7 @@ div.vtta.statusBar {
       .message.success {
         border-radius: 5px;
         background-color: #b8b822;
-        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/noun_tick_2075651.svg);
+        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-success.svg);
         color: black;
         padding: 10px;
         min-height: 90px;
