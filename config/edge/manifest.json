@@ -1,7 +1,7 @@
 {
    "manifest_version": 3,
    "name": "VTTA.io D&D Beyond Integration",
-   "version": "3.0.1",
+   "version": "3.0.2",
    "description": "Integrate your licensed content from D&D Beyond into your running Foundry VTT Dungeons & Dragons session.",
    "icons": {
       "32": "assets/icons/vtta.io-s-32x32.png",
