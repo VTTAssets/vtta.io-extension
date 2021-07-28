@@ -39,19 +39,18 @@ const Query = (hostname: string, token: string): QueryInterface => {
         // creating the request
         const request = createRequest("GET", token);
 
-        // logger.info("[GET] from " + hostname + query, request);
+        logger.info("[GET] from " + hostname + query, request);
 
         // executing the request, includes error handling
         fetch(hostname + query, request)
           .then(handleErrors)
           .then((response) => {
-            // if (response.status >= 400 && response.status < 600) {
-            //   throw Error(response.statusText);
-            // }
             return response.json();
           })
           .then((json) => resolve(json))
           .catch((error) => {
+            console.error("Query failed");
+            console.error(error);
             reject(error);
           });
       });

@@ -22,12 +22,20 @@ const display = (
   $("#message").prepend(msg);
   $("body").css("height", "auto");
 
-  $(msg).on("click", () =>
+  $(msg).on("click", (event) => {
+    console.log(event.target);
+    if (event.target.tagName === "A") {
+      const href = $(event.target).attr("href");
+      if (href) {
+        chrome.tabs.create({ url: href });
+        return;
+      }
+    }
     $(msg).fadeOut(function () {
       $(this).remove();
       $("body").css("height", "auto");
-    })
-  );
+    });
+  });
 
   if (timeout)
     setTimeout(() => {
