@@ -28,16 +28,16 @@ const initialize = async (pageViewMode: PageViewMode): Promise<null | Page> => {
   }
 
   const step = await Batch.get();
-  logger.info("Batch step", step);
+  logger.debug("Batch step", step);
   switch (step.status) {
     case "RUNNING": {
       if (document.URL !== `https://www.dndbeyond.com${step.url}`) {
-        logger.info(
+        logger.warn(
           `[VTTA.io] Batch is running, but this document is not meant to be processed (yet?), skipping processing (you can still manually import items on this page).`
         );
         return null;
       } else {
-        logger.info(
+        logger.debug(
           `[VTTA.io] Module ${moduleName} starts to process the page.`
         );
         return {

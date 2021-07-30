@@ -21,11 +21,11 @@ const versions = async (
   queryStringFVTT?: string
 ): Promise<number> => {
   const api = await query.vtta(queryStringAPI);
-  logger.info("Version API", api);
+  logger.debug("Version API", api);
   const fvtt = await query.fvtt(
     queryStringFVTT ? queryStringFVTT : queryStringAPI
   );
-  logger.info("Version FVTT", fvtt);
+  logger.debug("Version FVTT", fvtt);
 
   if (fvtt.v === 0) return 0;
   if (fvtt.v < api.v) return 1;

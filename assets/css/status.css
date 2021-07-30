@@ -164,6 +164,12 @@ div.vtta.statusBar .body .messages > * {
   margin-bottom: 1rem;
 }
 
+div.vtta.statusBar .body .messages .message {
+  border: thin solid #000000b0;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 5px 5px 16px -5px inset;
+          box-shadow: rgba(0, 0, 0, 0.75) 5px 5px 16px -5px inset;
+}
+
 div.vtta.statusBar .body .messages .message.note {
   border-radius: 5px;
   background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-info.svg);
@@ -263,6 +269,15 @@ div.vtta.statusBar.error {
   background-color: red;
   border: 4px solid rgba(153, 0, 0, 0.925);
   color: white;
+}
+
+div.vtta.statusBar.error .body .messages .timer {
+  height: 24px;
+  background-color: yellow;
+}
+
+div.vtta.statusBar.error .body .messages .timer .bar .tick {
+  background-color: #b30000;
 }
 
 div.vtta.statusBar.success {

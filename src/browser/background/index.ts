@@ -1,7 +1,7 @@
 import logger from "../../utilities/logging/index";
 import MessageRouter from "./messages/index";
 
-logger.info("[ServiceWorker] Initializing...");
+logger.debug("[ServiceWorker] Initializing...");
 
 chrome.runtime.onMessage.addListener(MessageRouter.relay);
 chrome.runtime.onMessage.addListener(MessageRouter.router);

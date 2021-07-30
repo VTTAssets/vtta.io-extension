@@ -11,21 +11,17 @@ const parseEntity = async (
 ): Promise<any> => {
   const parser = await Parser(slug);
 
-  if (!parser)
-    throw new ParsingError(
-      "Parsing Error: " + slug,
-      "I don't know how to parse that."
-    );
+  if (!parser) throw new ParsingError(slug, "I don't know how to parse that.");
 
   let result;
   try {
     //const data = { content: html, name: supplement.name };
     result = await parser.post(slug, { content: html, name: name });
-    logger.info("Parse result for " + slug, [supplement, result]);
+    logger.debug("Parse result for " + slug, [supplement, result]);
   } catch (error) {
-    logger.info("Error /w API [POST]", result);
+    logger.error("Error /w API [POST]", result);
     logger.error(error);
-    throw new ParsingError("Parsing Error: " + slug, error);
+    throw new ParsingError(slug, error);
   }
 
   const isGenericIcon = (url: string | null | undefined) => {
@@ -49,13 +45,13 @@ const parseEntity = async (
         case "magic-items":
           // non-default-icon on supplement
           if (isGenericIcon(supplement.img)) {
-            logger.info("Generic Icon detected: " + supplement.img);
+            logger.debug("Generic Icon detected: " + supplement.img);
             if (entity.img) {
-              logger.info("Replacing with Parser Icon: " + entity.img);
+              logger.debug("Replacing with Parser Icon: " + entity.img);
               supplement.img = entity.img;
             }
           } else {
-            logger.info("Custom Icon detected: " + supplement.img);
+            logger.debug("Custom Icon detected: " + supplement.img);
           }
 
           break;
@@ -94,7 +90,7 @@ const parseEntity = async (
     });
   } else {
     logger.error("Parsing Error: " + slug, result);
-    throw new ParsingError("Parsing Error: " + slug, result);
+    throw new ParsingError(slug, result);
   }
 };
 

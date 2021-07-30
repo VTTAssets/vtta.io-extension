@@ -23,7 +23,7 @@ const handler: MessageHandler = async (
   sender: chrome.runtime.MessageSender,
   callback: MessageCallback
 ) => {
-  logger.info("Relaying " + data.type, data);
+  logger.debug("Relaying " + data.type, data);
   // Is there a token supplied, so we can query the
   const response = await relay(data);
   return callback(response);

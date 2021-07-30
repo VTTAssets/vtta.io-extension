@@ -20,7 +20,7 @@ export default async (element: HTMLElement): Promise<ItemDetails> => {
   // Are we in a listing or encounter builder?
   const pageInfo = getPageInfo();
 
-  logger.info("Analyzing list item", pageInfo);
+  logger.debug("Analyzing list item", pageInfo);
 
   switch (pageInfo.view) {
     case "LISTING":
@@ -71,11 +71,11 @@ export default async (element: HTMLElement): Promise<ItemDetails> => {
       break;
     case "ENCOUNTERBUILDER":
       {
-        logger.info("Analyzing element", element);
+        logger.debug("Analyzing element", element);
         let icon = $(element).find("img");
-        logger.info("Icon", icon);
+        logger.debug("Icon", icon);
         result.img = extractImage(icon);
-        logger.info("Result of extraction", result.img);
+        logger.debug("Result of extraction", result.img);
         if (
           result.img &&
           result.img.indexOf("images/icons/item_types/") !== -1

@@ -13,7 +13,7 @@ export default (
     sender: chrome.runtime.MessageSender,
     sendResponse: MessageCallback
   ) => {
-    logger.info(`[${type}:${source}] Message received`, message);
+    logger.debug(`[${type}:${source}] Message received`, message);
 
     const messageType = message.type;
 
@@ -23,14 +23,14 @@ export default (
     );
 
     if (messageHandler) {
-      logger.info(
+      logger.debug(
         `[ROUTER:${source}] Handler ${messageHandler.type}: Calling...`
       );
       // Found a registered message handler for this type of message
       return messageHandler.handler(message, sender, sendResponse);
     } else {
       if (defaultHandler) {
-        logger.info(`[${type}:${source}] Calling default handler...`, message);
+        logger.debug(`[${type}:${source}] Calling default handler...`, message);
         return defaultHandler.handler(message, sender, sendResponse);
       }
     }

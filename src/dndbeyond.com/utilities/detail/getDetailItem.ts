@@ -11,10 +11,10 @@ import analyzeDetailItem from "./analyzeDetailItem";
  */
 export default async (): Promise<ItemData | null> => {
   // get the relevant HTML Block for this kind of item
-  logger.info("getDetailItem starting...");
+  logger.debug("getDetailItem starting...");
   // const { name, url, slug, img, status } = await analyzeDetailItem();
   const detail = await analyzeDetailItem();
-  logger.info("Detail Item", detail);
+  logger.debug("Detail Item", detail);
 
   let data = null;
 

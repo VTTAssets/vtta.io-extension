@@ -4,13 +4,11 @@ import logger from "../utilities/logging/index";
 import MessageRouter from "./messages/index";
 
 const inject = async () => {
-  logger.info("[CS:FOUNDRY] hello");
-
   chrome.runtime.onMessage.addListener(MessageRouter);
 
   const moduleAvailabilty = await checkModuleAvailability();
 
-  logger.info("Module Availabilty", moduleAvailabilty);
+  logger.debug("Module Availabilty", moduleAvailabilty);
 
   if (moduleAvailabilty.success) {
     // signal availability to popup and background script

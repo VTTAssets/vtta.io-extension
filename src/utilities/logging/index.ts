@@ -1,3 +1,5 @@
+import Storage from "../../utilities/storage/index";
+
 type LOG_LEVEL_OFF = 0;
 type LOG_LEVEL_DEBUG = 1;
 type LOG_LEVEL_INFO = 2;
@@ -11,11 +13,11 @@ type LogLevel =
   | LOG_LEVEL_WARN
   | LOG_LEVEL_ERROR;
 
-const LOG_LEVEL_OFF: LogLevel = 0;
-const LOG_LEVEL_DEBUG: LogLevel = 1;
-const LOG_LEVEL_INFO: LogLevel = 2;
-const LOG_LEVEL_WARN: LogLevel = 4;
-const LOG_LEVEL_ERROR: LogLevel = 8;
+const LOG_LEVEL_DEBUG: LogLevel = 0;
+const LOG_LEVEL_INFO: LogLevel = 1;
+const LOG_LEVEL_WARN: LogLevel = 2;
+const LOG_LEVEL_ERROR: LogLevel = 4;
+const LOG_LEVEL_OFF: LogLevel = 8;
 
 const LOG_LEVEL: LogLevel = 0;
 
@@ -40,9 +42,9 @@ const LOG_PREFIX = new Map([
 const LOG_FUNCTIONS = new Map([
   [LOG_LEVEL_OFF, () => {}],
   [LOG_LEVEL_DEBUG, console.log],
-  [LOG_LEVEL_INFO, console.info],
-  [LOG_LEVEL_WARN, console.warn],
-  [LOG_LEVEL_ERROR, console.error],
+  [LOG_LEVEL_INFO, console.log],
+  [LOG_LEVEL_WARN, console.log],
+  [LOG_LEVEL_ERROR, console.log],
 ]);
 
 /**
@@ -52,19 +54,27 @@ const LOG_FUNCTIONS = new Map([
  * @param data Data to display, split into a [title, ...rest]
  */
 const log = (logLevel: LogLevel, message: string, data?: any) => {
-  if (filter(logLevel)) return;
-
-  const coloredTitle = `%c[${LOG_PREFIX.get(
-    logLevel
-  )}] vtta-extension: %c${message}`;
-  const logFunction = LOG_FUNCTIONS.get(logLevel);
-  const logFormat = LOG_FORMATS.get(logLevel);
-  if (data) {
-    logFunction(coloredTitle, logFormat + ";font-weight:bold", logFormat);
-    logFunction(data);
-  } else {
-    logFunction(coloredTitle, logFormat + ";font-weight:bold", logFormat);
-  }
+  Storage.local.get(["logLevel"]).then((SETTING) => {
+    console.log(
+      "Configured LogLevel: " +
+        SETTING.logLevel +
+        ", Message LogLevel: " +
+        logLevel
+    );
+    if (logLevel >= SETTING.logLevel) {
+      const coloredTitle = `%c[${LOG_PREFIX.get(
+        logLevel
+      )}] vtta-extension: %c${message}`;
+      const logFunction = LOG_FUNCTIONS.get(logLevel);
+      const logFormat = LOG_FORMATS.get(logLevel);
+      if (data) {
+        logFunction(coloredTitle, logFormat + ";font-weight:bold", logFormat);
+        logFunction(data);
+      } else {
+        logFunction(coloredTitle, logFormat + ";font-weight:bold", logFormat);
+      }
+    }
+  });
 };
 
 /**

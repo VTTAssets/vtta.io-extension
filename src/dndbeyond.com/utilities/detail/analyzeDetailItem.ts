@@ -44,7 +44,7 @@ export default async (): Promise<ItemDetails> => {
   // check the update status
   if (result.name /* && result.url */ && result.slug) {
     const fvtt = await Parser.query.fvtt(result.slug);
-    logger.info("Foundry responded: ", fvtt);
+    logger.debug("Foundry responded: ", fvtt);
     if (fvtt.v === 0) {
       result.status = "IMPORT";
       return result;

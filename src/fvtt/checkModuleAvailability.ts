@@ -35,14 +35,14 @@ const checkCoreAvailability = async (): Promise<FoundryConnectionResponse> => {
       user: user,
     },
   };
-  logger.info("Checking for vtta availability", eventData);
+  logger.debug("Checking for vtta availability", eventData);
   const POLL_QUERY_EVENT = new CustomEvent(POLL_QUERY, eventData);
 
-  logger.info(`Querying for vtta-ddb`);
+  logger.debug(`Querying for vtta-ddb`);
   let success = false;
 
   return new Promise((resolve, reject) => {
-    logger.info(
+    logger.debug(
       `[POLL] Starting to poll for the vtta-ddb with a timeout of ${POLL_TIMEOUT} seconds..`
     );
 
@@ -66,7 +66,7 @@ const checkCoreAvailability = async (): Promise<FoundryConnectionResponse> => {
     const countingInterval = setInterval(() => {
       if (success === false) {
         passedSeconds++;
-        logger.info("[POLL] Polling since " + passedSeconds + "s...");
+        logger.debug("[POLL] Polling since " + passedSeconds + "s...");
         // dispatch the query event
         window.dispatchEvent(POLL_QUERY_EVENT);
       }
@@ -76,8 +76,8 @@ const checkCoreAvailability = async (): Promise<FoundryConnectionResponse> => {
     setTimeout(() => {
       clearInterval(countingInterval);
       if (!success) {
-        logger.info(
-          "I will abort now, there does not seem to be a connection possible"
+        logger.warn(
+          "No response from Foundry/ VTTA module, aborting connection attempt now."
         );
       }
 
@@ -87,7 +87,7 @@ const checkCoreAvailability = async (): Promise<FoundryConnectionResponse> => {
       );
     }, POLL_TIMEOUT * 1000);
 
-    logger.info("Dispatching event " + POLL_QUERY);
+    logger.debug("Dispatching event " + POLL_QUERY);
     // dispatch the query event
     window.dispatchEvent(POLL_QUERY_EVENT);
   });

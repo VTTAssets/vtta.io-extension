@@ -24,10 +24,10 @@ const main = async () => {
   logger.info("D&D Integration: Sources (ToC) Listing module loaded...");
 
   if (!page.env.isFoundryConnected) {
-    return logger.info("Foundry not connected, aborting page analysis");
+    return logger.debug("Foundry not connected, aborting page analysis");
   }
 
-  logger.info("Step", page.env.batch);
+  logger.debug("Step", page.env.batch);
 
   // Get the sourcebook parser
   const parser = await Parser(slug);
@@ -100,7 +100,7 @@ const main = async () => {
           "note"
         );
 
-        logger.info("Source meta from Sources(API)", batch);
+        logger.debug("Source meta from Sources(API)", batch);
 
         const entitySlugs = batch.pages
           .map((url: string) => {
@@ -147,7 +147,7 @@ const main = async () => {
               }
             })
           );
-          logger.info(
+          logger.debug(
             "Updated batch by filtering out all up-to-date entities",
             batch
           );
@@ -212,10 +212,10 @@ const main = async () => {
           "sources/batch/" + page.env.batch.batchId
         );
 
-        logger.info("Aggregated result", response);
+        logger.debug("Aggregated result", response);
 
         if (!response.success) {
-          logger.info("API could not process the result");
+          logger.error("API could not process the result");
           status.edit(
             importState.id,
             "<p><strong>Something went wrong!</strong> The Parser did not deliver your result. I already got a message about the issue and will look at it soon.</p>",
@@ -246,7 +246,7 @@ const main = async () => {
             "pending"
           );
           const importResult = await Tools.entity.import(journals); //importEntities(journals);
-          logger.info("JournalEntries imported", importResult);
+          logger.debug("JournalEntries imported", importResult);
           status.edit(
             importState.id,
             `<p><strong>Importing ${journals.length} Journal Entries... Done.</strong>`,
@@ -272,7 +272,7 @@ const main = async () => {
           );
 
           const importResult = await Tools.entity.import(scenes); //await importEntities(scenes);
-          logger.info("Scenes imported", importResult);
+          logger.debug("Scenes imported", importResult);
           status.edit(
             importState.id,
             `<p><strong>Importing ${scenes.length} Scenes Entries... Done.</strong> </p>`,
@@ -297,7 +297,7 @@ const main = async () => {
             "pending"
           );
           const importResult = await Tools.entity.import(tables); //await importEntities(tables);
-          logger.info("RollTables imported", importResult);
+          logger.debug("RollTables imported", importResult);
           status.edit(
             importState.id,
             `<p><strong>Importing ${tables.length} RollTables... Done.</strong> </p>`,

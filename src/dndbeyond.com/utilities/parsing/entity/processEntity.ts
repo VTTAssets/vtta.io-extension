@@ -23,7 +23,7 @@ const processEntity = async (
           " individual, specialized versions during import."
       );
     }
-    logger.info("Entity parsed successfully", entities);
+    logger.debug("Entity parsed successfully", entities);
   } catch (error) {
     logger.error("Entity " + slug + " failed to parse", error);
     panel.edit(PARSING.id, "Parsing failed", "error");

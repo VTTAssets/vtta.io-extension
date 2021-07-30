@@ -14,16 +14,16 @@ const main = async () => {
   const page = await Page.initialize("ENCOUNTERBUILDER");
   if (!page) return;
 
-  logger.info("Page Information", page);
+  logger.debug("Page Information", page);
 
   // Ignore while in batch mode
   if (page.env.processingMode === "PROCESSING_MODE_AUTOMATIC") return;
 
-  logger.info("Processing Mode: MANUAL");
+  logger.debug("Processing Mode: MANUAL");
   // observe the list for changes in the UI
   const observer = getListObserver(page.env);
   observer.subscribe((itemData: ItemData) => {
-    logger.info("Observer starts processing new block", itemData);
+    logger.debug("Observer starts processing new block", itemData);
   });
 };
 

@@ -4,4 +4,5 @@ interface JQuery {
   getHref(): string;
   getBackgroundImage(): string;
   getText(): string;
+  checkbox(): void;
 }

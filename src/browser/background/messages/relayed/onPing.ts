@@ -12,14 +12,15 @@ export const MESSAGE_TYPE = CONFIG.messages.FVTT_PING;
 
 export const ping = async (): Promise<MessageHandlerResponse> => {
   try {
-    logger.info("Pinging FVTT...");
+    logger.debug("Pinging FVTT...");
     const t0 = performance.now();
     const response = await relay({
       type: CONFIG.messages.FVTT_PING,
     });
     const duration = performance.now() - t0;
-    logger.info("PING response: ", response);
+    logger.debug("PING response: ", response);
     if (response.success) {
+      logger.info("[PING: Success] Foundry is available");
       return {
         success: true,
         data: {
@@ -55,12 +56,12 @@ const handler: MessageHandler = async (
   sender: chrome.runtime.MessageSender,
   callback: MessageCallback
 ) => {
-  logger.info("Relaying " + MESSAGE_TYPE, data);
+  logger.debug("Relaying " + MESSAGE_TYPE, data);
   // Is there a token supplied, so we can query the
 
   try {
     const result = await ping();
-    logger.info("Ping result", result);
+    logger.debug("Ping result", result);
     if (result) {
       return callback(result);
     }

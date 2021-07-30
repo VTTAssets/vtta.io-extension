@@ -5,6 +5,7 @@ import update from "./update";
 import checkOff from "./checkOff";
 import stop from "./stop";
 import get from "./get";
+import add from "./add";
 
 export const DEFAULT_BATCH: Batch = {
   batchId: "",
@@ -19,6 +20,7 @@ export const DEFAULT_BATCH: Batch = {
 };
 
 export default {
+  add,
   get,
   load,
   save,

@@ -48,19 +48,18 @@ const main = async () => {
             status.add(`Successfully imported ${itemData.name}...`, "success");
           }
           status.counter.update(statusCounter, ++processedCount);
-
-          // Update the batch with all processed URLs
-          Batch.update({
-            status: "OK",
-            next: null,
-            processed: [new URL(document.URL).pathname],
-          }).then((batchStep) => {
-            if (batchStep.url) {
-              // DEBUG: DISABLE GOING TO NEXT PAGE
-              window.location.href = batchStep.url;
-            }
-          });
         }
+        // Update the batch with all processed URLs
+        Batch.update({
+          status: "OK",
+          next: null,
+          processed: [new URL(document.URL).pathname],
+        }).then((batchStep) => {
+          if (batchStep.url) {
+            // DEBUG: DISABLE GOING TO NEXT PAGE
+            window.location.href = batchStep.url;
+          }
+        });
       }
       break;
     case "PROCESSING_MODE_MANUAL":

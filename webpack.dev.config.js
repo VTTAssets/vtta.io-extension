@@ -19,6 +19,7 @@ const config = {
      */
     sw: path.join(src, "browser/background/index.ts"),
     "browser/popup/index": path.join(src, "browser/popup/index.ts"),
+    "browser/options/index": path.join(src, "browser/options/index.ts"),
 
     /**
      *  D&D Beyond: List Views
@@ -91,7 +92,7 @@ const config = {
         { from: "assets/img/**/*", to: "" },
         { from: "src/browser/background/index.html", to: "browser/background" },
         { from: "src/browser/popup/index.html", to: "browser/popup" },
-        // { from: "src/browser/options/index.html", to: "browser/options" },
+        { from: "src/browser/options/index.html", to: "browser/options" },
       ],
     }),
   ],

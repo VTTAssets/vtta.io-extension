@@ -71,6 +71,6 @@ export default (env: Environment) => {
 
     return blockObserver;
   } else {
-    logger.info("No Listing found on page, aborting analysis.");
+    logger.debug("No Listing found on page, aborting analysis.");
   }
 };

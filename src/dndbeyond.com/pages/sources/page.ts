@@ -20,7 +20,7 @@ const main = async () => {
   const page = await Page.initialize("PAGE");
   if (!page) return;
 
-  logger.info("Page Information", page);
+  logger.debug("Page Information", page);
   let matches = document.URL.match(
     /^https:\/\/www\.dndbeyond\.com\/sources\/(\w+)\/(.+)$/
   );

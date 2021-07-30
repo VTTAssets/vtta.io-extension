@@ -53,25 +53,25 @@ const init = async () => {
     type: CONFIG.messages.ACTION,
   };
   chrome.runtime.sendMessage(message, (response) => {
-    logger.info("Response received from ACTION event", response);
+    logger.debug("Response received from ACTION event", response);
 
     if (response.success) {
-      logger.info("FVTT is connected already");
+      logger.debug("FVTT is connected already");
       updateConnectionStateButton("connected");
     } else {
-      logger.info("FVTT is not yet connected");
+      logger.debug("FVTT is not yet connected");
 
       const message = response?.data?.message;
       if (message) {
         switch (message) {
           case "Connection initiated":
-            logger.info(
+            logger.debug(
               "FVTT is currenctly connecting, waiting for the success message"
             );
             updateConnectionStateButton("pending");
             break;
           case "ActiveTab not Foundry VTT":
-            logger.info("FVTT is not in the ActiveTab");
+            logger.debug("FVTT is not in the ActiveTab");
             updateConnectionStateButton("error");
             Note.display(
               "error",

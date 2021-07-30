@@ -133,6 +133,11 @@ div.vtta.statusBar {
         margin-bottom: 1rem;
       }
 
+      .message {
+        border: thin solid #000000b0;
+        box-shadow: rgba(0, 0, 0, 0.75) 5px 5px 16px -5px inset;
+      }
+
       .message.note {
         border-radius: 5px;
         background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-info.svg);
@@ -183,6 +188,7 @@ div.vtta.statusBar {
         -ms-animation: rotating 2s linear infinite;
         -o-animation: rotating 2s linear infinite;
         animation: pulse-orange 2s infinite;
+        background-color: orange;
       }
 
       .timer {
@@ -226,6 +232,19 @@ div.vtta.statusBar.error {
   background-color: red;
   border: 4px solid rgba(153, 0, 0, 0.925);
   color: white;
+  .body {
+    .messages {
+      .timer {
+        .bar {
+          .tick {
+            background-color: #b30000;
+          }
+        }
+        height: 24px;
+        background-color: yellow;
+      }
+    }
+  }
 }
 
 div.vtta.statusBar.success {

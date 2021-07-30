@@ -19,7 +19,7 @@ const handler: MessageHandler = async (
   sender: chrome.runtime.MessageSender,
   callback: MessageCallback
 ) => {
-  logger.info("COnnection attempt with the following data", data);
+  logger.debug("Connection attempt with the following data", data);
   // Is there a token supplied, so we can query the
   const token = data?.data?.token;
   if (!token) {
@@ -49,7 +49,7 @@ const handler: MessageHandler = async (
 
   // Set the storage entries to reflect the probable change in environment
   // this will trigger a refresh of the user's profile
-  logger.info("[ENVIRONMENT] Setting environment " + config.label);
+  logger.debug("[ENVIRONMENT] Setting environment " + config.label);
 
   await Storage.sync.set({
     environment: config.name,
@@ -64,10 +64,10 @@ const handler: MessageHandler = async (
   // get the user profile
   const profile = <User>await api.get("/auth/profile");
 
-  logger.info("Retrieved user from API", profile);
+  logger.debug("Retrieved user from API", profile);
 
   // update the storage again
-  logger.info("Updating the user within the storage", { user: profile });
+  logger.debug("Updating the user within the storage", { user: profile });
   await Storage.sync.set({ user: profile });
 
   const manifest = chrome.runtime.getManifest();

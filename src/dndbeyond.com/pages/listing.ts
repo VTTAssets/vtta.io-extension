@@ -10,6 +10,7 @@ import {
   isListingStart,
   processListStart,
 } from "../utilities/list";
+import batch from "../utilities/batch/index";
 
 const main = async () => {
   const page = await Page.initialize("LISTING");
@@ -32,7 +33,9 @@ const main = async () => {
         ).length;
         if (processedCount > 0) {
           status.add(
-            "Entities not requiring an update: " + processedCount,
+            `<b>Up-to-date entities</b>: ${processedCount}, <b>Outdated or missing entities</b>: ${
+              entities.length - processedCount
+            }`,
             "note"
           );
         }
@@ -40,10 +43,13 @@ const main = async () => {
         // filter all items without data out
         entities = entities.filter((entity) => entity.data !== null);
 
+        if (entities.length) {
+        }
+
         const parsedCounter = status.counter.create("Parsed", entities.length);
 
         // parse everything
-        let parsedEntities = await Promise.all(
+        let promises = await Promise.allSettled(
           entities.map(async (itemData, index) => {
             const entity = await Tools.entity.parse(
               itemData.slug,
@@ -55,79 +61,59 @@ const main = async () => {
             return entity;
           })
         );
-        parsedEntities = parsedEntities.flat(1);
+
+        let successes: any[] = [];
+        const failures: string[] = [];
+        promises.forEach((promise, index) => {
+          if (promise.status === "fulfilled") {
+            successes = successes.concat(promise.value);
+          } else {
+            failures.push(`/${entities[index].slug}`);
+          }
+        });
 
         const importLabel = status.add(
           "Importing parsed entities. The FVTT tab will display detailed progress information.",
           "pending"
         );
 
-        const importResult = await Tools.entity.import(parsedEntities);
+        const importResult = await Tools.entity.import(successes);
         logger.info("Import Result", importResult);
         if (importResult !== true) {
           status.add("Error importing the parsed entities!", "error");
         } else {
           status.edit(
             importLabel.id,
-            "Successfully imported " + parsedEntities.length + " entities.",
+            "Successfully imported " + successes.length + " entities.",
             "success"
           );
         }
 
-        // const importedEntities = await Promise.all(
-        //   parsedEntities.map(async (entity, index) => {
-        //     const importResult = await Tools.entity.import(entity);
-        //     if (importResult !== true) {
-        //       status.add("Error importing entity " + entity.name, "error");
-        //     }
-        //     status.counter.update(importCounter, index + 1);
-        //   })
-        // );
-
-        // // parse and import everything
-        // const processedEntities = await Promise.all(
-        //   entities.map(async (itemData, index) => {
-        //     const entity = await Tools.entity.parse(
-        //       itemData.slug,
-        //       itemData.name,
-        //       { img: itemData.img },
-        //       itemData.data
-        //     );
-
-        //     const importResult = await Tools.entity.import(entity);
-        //     status.counter.update(statusCounter, ++processedCount);
-        //     if (importResult !== true) {
-        //       status.add("Error importing entity " + itemData.name, "error");
-        //       return { success: false, name: itemData.name };
-        //     } else {
-        //       status.add(
-        //         `Successfully imported ${itemData.name}...`,
-        //         "success"
-        //       );
-        //       return {
-        //         success: true,
-        //         name: itemData.name,
-        //         url: `/${itemData.slug}`,
-        //       };
-        //     }
-        //   })
-        // );
-
         // Update the batch with all processed URLs
+        const processedUrls = [step.url].concat(
+          successes.map((entity) => `/${entity.flags.vtta.id}`)
+        );
 
-        /**
-         * I need to change this
-         */
-        // let processedUrls = [step.url].concat(
-        //   processedEntities.map((item) => item.url)
-        // );
+        logger.info("Processed the following URLs", processedUrls);
 
-        // logger.info("Processed the following URLs", processedUrls);
+        if (failures.length) {
+          status.add(
+            `Failed to parse the following entities: ${failures.join(
+              ", "
+            )}. I will try to parse it after finishing this list individually.`,
+            "error"
+          );
+
+          await batch.add(failures.map((failure) => `/${failure}`));
+          await status.timer("Continuing batch in 10 secnds", 10, {
+            abortable: false,
+          });
+        }
 
         const batchData: BatchUpdate = {
           status: "OK",
           next: page.info.next,
-          processed: [step.url], // processedUrls,
+          processed: processedUrls,
         };
 
         logger.info("Updating Batch", batchData);
@@ -142,6 +128,16 @@ const main = async () => {
       break;
     case "PROCESSING_MODE_MANUAL":
       {
+        if (page.env.batch.status === "DONE") {
+          let status = StatusDisplay();
+          status.clear();
+          status.add(
+            "<p><strong>Done!</strong></p><p>Everything is imported and ready to use. Have fun! </p>",
+            "success"
+          );
+          status.complete(true);
+        }
+
         logger.info("Processing Mode: MANUAL");
         // observe the list for changes in the UI
         const observer = getListObserver(page.env);

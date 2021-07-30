@@ -59,7 +59,7 @@ const handler: MessageHandler = async (
   sender: chrome.runtime.MessageSender,
   callback: MessageCallback
 ) => {
-  logger.info("Handler onAction starting...");
+  logger.debug("Handler onAction starting...");
 
   let response: MessageHandlerResponse = {
     success: false,
@@ -70,14 +70,14 @@ const handler: MessageHandler = async (
 
   // 1. is Alive? We can directly call the ping method from the background script
   const fvttConnection = await ping();
-  logger.info("Ping result", fvttConnection);
+  logger.debug("Ping result", fvttConnection);
 
   if (fvttConnection.success) {
     response = fvttConnection;
-    logger.info("Foundry is already connected", fvttConnection);
+    logger.debug("Foundry is already connected", fvttConnection);
     return callback(fvttConnection);
   } else {
-    logger.info("No heartbeat from Foundry received");
+    logger.debug("No heartbeat from Foundry received");
     // we signal the connection attempt to the popup early, so it will get subsequent updates from the succes
     // or failure of the connection attempt, too
 
@@ -97,13 +97,12 @@ const handler: MessageHandler = async (
         files: ["content/fvtt/index.js"],
       };
       const injectionResult = await chrome.scripting.executeScript(injection);
-      logger.info("Injection Result", injectionResult);
 
       // this is a true disconnected communication from here on. We will report back a pending state
       // the success of the connection is transmitted from the content script itself
       // and all interested parties need to register a listener to that event themselves
     } else {
-      logger.info("Foundry is not the active tab");
+      logger.debug("Foundry is not the active tab");
       return callback({
         success: false,
         data: {

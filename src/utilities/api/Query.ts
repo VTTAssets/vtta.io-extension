@@ -18,20 +18,20 @@ const createRequest = (
     referrerPolicy: "no-referrer",
     body: requestType === "POST" && json ? JSON.stringify(json) : null,
   };
-  logger.info(`[${requestType}]`, request);
+  logger.debug(`[${requestType}]`, request);
   return request;
 };
 
 const handleErrors = (response: Response) => {
   if (!response.ok) {
-    logger.error("Response is not okay", response);
+    //logger.error("Response is not okay", response);
     throw Error(response.statusText);
   }
   return response;
 };
 
 const Query = (hostname: string, token: string): QueryInterface => {
-  logger.info(`[QUERY:Init] ${hostname}, auth: ${token}`);
+  logger.debug(`[QUERY:Init] ${hostname}, auth: ${token}`);
   return {
     get: (url: string): Promise<any> => {
       const query = url.indexOf("/") === 0 ? url : "/" + url;
@@ -39,7 +39,7 @@ const Query = (hostname: string, token: string): QueryInterface => {
         // creating the request
         const request = createRequest("GET", token);
 
-        logger.info("[GET] from " + hostname + query, request);
+        logger.debug("[GET] from " + hostname + query, request);
 
         // executing the request, includes error handling
         fetch(hostname + query, request)
@@ -56,22 +56,22 @@ const Query = (hostname: string, token: string): QueryInterface => {
       });
     },
     post: (url: string, input: any): Promise<any> => {
-      // logger.info("[POST] " + url, input);
+      logger.debug("[POST] " + url, input);
       const query = url.indexOf("/") === 0 ? url : "/" + url;
       return new Promise((resolve, reject) => {
         // creating the request
         const request = createRequest("POST", token, input);
 
-        logger.info("[POST] to " + hostname + query, request);
+        logger.debug("[POST] to " + hostname + query, request);
         // executing the request, includes error handling
         fetch(hostname + query, request)
           .then(handleErrors)
           .then((response) => {
-            // logger.info("RESPONSE", response);
+            logger.debug("RESPONSE", response);
             return response.json();
           })
           .then((json) => {
-            // logger.info("JSON", json);
+            logger.debug("JSON", json);
             resolve(json);
           })
           .catch((error) => {

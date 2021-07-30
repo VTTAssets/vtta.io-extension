@@ -1,158 +1,134 @@
 {
-   "manifest_version": 3,
-   "name": "VTTA.io D&D Beyond Integration",
-   "version": "3.0.2",
-   "description": "Integrate your licensed content from D&D Beyond into your running Foundry VTT Dungeons & Dragons session.",
-   "icons": {
+  "manifest_version": 3,
+  "name": "VTTA.io D&D Beyond Integration",
+  "version": "3.0.2",
+  "description": "Integrate your licensed content from D&D Beyond into your running Foundry VTT Dungeons & Dragons session.",
+  "icons": {
+    "32": "assets/icons/vtta.io-s-32x32.png",
+    "38": "assets/icons/vtta.io-s-38x38.png",
+    "64": "assets/icons/vtta.io-s-64x64.png",
+    "128": "assets/icons/vtta.io-s-128x128.png"
+  },
+  "action": {
+    "default_icon": {
       "32": "assets/icons/vtta.io-s-32x32.png",
       "38": "assets/icons/vtta.io-s-38x38.png",
       "64": "assets/icons/vtta.io-s-64x64.png",
       "128": "assets/icons/vtta.io-s-128x128.png"
-   },
-   "action": {
-      "default_icon": {
-         "32": "assets/icons/vtta.io-s-32x32.png",
-         "38": "assets/icons/vtta.io-s-38x38.png",
-         "64": "assets/icons/vtta.io-s-64x64.png",
-         "128": "assets/icons/vtta.io-s-128x128.png"
-      },
-      "default_title": "Click Me",
-      "default_popup": "browser/popup/index.html"
-   },
-   "author": "Sebastian Will",
-   "background": {
-      "service_worker": "sw.js"
-   },
-   "content_scripts": [
-      {
-         "matches": [
-            "https://www.dndbeyond.com/monsters*",
-            "https://www.dndbeyond.com/monsters?page=*",
-            "https://www.dndbeyond.com/magic-items*",
-            "https://www.dndbeyond.com/magic-items?page=*",
-            "https://www.dndbeyond.com/spells*",
-            "https://www.dndbeyond.com/spells?page=*",
-            "https://www.dndbeyond.com/spells/school/*",
-            "https://www.dndbeyond.com/spells/class/*",
-            "https://www.dndbeyond.com/equipment*",
-            "https://www.dndbeyond.com/equipment?page=*",
-            "https://www.dndbeyond.com/encounter-builder*"
-         ],
-         "js": [
-            "assets/libs/jquery/jquery-3.5.1.min.js",
-            "assets/libs/jquery/jquery.adjustments.js",
-            "content/dndbeyond.com/listing.js"
-         ],
-         "css": [
-            "assets/css/status.min.css",
-            "assets/css/adjustments.min.css"
-         ],
-         "run_at": "document_idle"
-      },
-      {
-         "matches": [
-            "https://www.dndbeyond.com/monsters/*",
-            "https://www.dndbeyond.com/magic-items/*",
-            "https://www.dndbeyond.com/spells/*",
-            "https://www.dndbeyond.com/equipment/*"
-         ],
-         "js": [
-            "assets/libs/jquery/jquery-3.5.1.min.js",
-            "assets/libs/jquery/jquery.adjustments.js",
-            "content/dndbeyond.com/detail.js"
-         ],
-         "css": [
-            "assets/css/status.min.css"
-         ],
-         "run_at": "document_idle"
-      },
-      {
-         "matches": [
-            "https://www.dndbeyond.com/encounter-builder"
-         ],
-         "js": [
-            "assets/libs/jquery/jquery-3.5.1.min.js",
-            "assets/libs/jquery/jquery.adjustments.js",
-            "content/dndbeyond.com/encounterBuilder/builder.js"
-         ],
-         "css": [
-            "assets/css/status.min.css",
-            "assets/css/adjustments.min.css"
-         ],
-         "run_at": "document_idle"
-      },
-      {
-         "matches": [
-            "https://www.dndbeyond.com/sources/*"
-         ],
-         "js": [
-            "assets/libs/jquery/jquery-3.5.1.min.js",
-            "assets/libs/jquery/jquery.adjustments.js",
-            "content/dndbeyond.com/sources/toc.js"
-         ],
-         "css": [
-            "assets/css/status.min.css"
-         ],
-         "run_at": "document_idle"
-      },
-      {
-         "matches": [
-            "https://www.dndbeyond.com/sources/*"
-         ],
-         "js": [
-            "assets/libs/jquery/jquery-3.5.1.min.js",
-            "assets/libs/jquery/jquery.adjustments.js",
-            "content/dndbeyond.com/sources/page.js"
-         ],
-         "css": [
-            "assets/css/status.min.css"
-         ],
-         "run_at": "document_idle"
-      },
-      {
-         "matches": [
-            "https://www.dndbeyond.com/marketplace/*"
-         ],
-         "js": [
-            "assets/libs/jquery/jquery-3.5.1.min.js",
-            "assets/libs/jquery/jquery.adjustments.js",
-            "content/dndbeyond.com/marketplace.js"
-         ],
-         "css": [
-            "assets/css/status.min.css"
-         ],
-         "run_at": "document_idle"
-      }
-   ],
-   "externally_connectable": {
+    },
+    "default_title": "Click Me",
+    "default_popup": "browser/popup/index.html"
+  },
+  "author": "Sebastian Will",
+  "background": {
+    "service_worker": "sw.js"
+  },
+  "content_scripts": [
+    {
       "matches": [
-         "https://*.vtta.dev/user/profile",
-         "https://*.vtta.io/user/profile",
-         "https://vttassets.eu.ngrok.io/user/profile"
-      ]
-   },
-   "homepage_url": "https://www.vtta.io",
-   "host_permissions": [],
-   "incognito": "split",
-   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAytSaZ5gNqsm/J35cOcVuU0NWt+LA830RT7Hn0Ub0Wt2F9588ffdSnavLCifGrWtpSVtK15nwqG+4nYrRCrA1Unw4LrQT8oAOxfTVsGUB7PFBqmTR2t8+qsaVhndLVx2fccBRZkW/j13xoePO6DXKS0Cmk0z9sd8C4pDJm9palp/LSNU+YNaURZ1XQHLcUuv/JOeh3Dm2AcFJ4qCy+P+TsQd0ZVY+GcJppGIMrLu3bOflMbFzYbLvsrMLoEdAfNRUznNnlvMHoDQKVHbb6k4YbjIVZiG6+wa/rm7dDuFp1GydBeKkNqQK2knXVsbpwFB3n3U52J2pCQvxBopwnti6jwIDAQAB",
-   "offline_enabled": false,
-   "permissions": [
-      "activeTab",
-      "storage",
-      "scripting"
-   ],
-   "short_name": "VTTA.io DDB",
-   "web_accessible_resources": [
-      {
-         "resources": [
-            "assets/icons/*.png",
-            "assets/icons/*.svg",
-            "assets/img/position-chrome-tabs.gif",
-            "assets/css/*.css"
-         ],
-         "matches": [
-            "https://www.dndbeyond.com/*"
-         ]
-      }
-   ]
+        "https://www.dndbeyond.com/monsters*",
+        "https://www.dndbeyond.com/monsters?page=*",
+        "https://www.dndbeyond.com/magic-items*",
+        "https://www.dndbeyond.com/magic-items?page=*",
+        "https://www.dndbeyond.com/spells*",
+        "https://www.dndbeyond.com/spells?page=*",
+        "https://www.dndbeyond.com/spells/school/*",
+        "https://www.dndbeyond.com/spells/class/*",
+        "https://www.dndbeyond.com/equipment*",
+        "https://www.dndbeyond.com/equipment?page=*",
+        "https://www.dndbeyond.com/encounter-builder*"
+      ],
+      "js": [
+        "assets/libs/jquery/jquery-3.5.1.min.js",
+        "assets/libs/jquery/jquery.adjustments.js",
+        "content/dndbeyond.com/listing.js"
+      ],
+      "css": ["assets/css/status.min.css", "assets/css/adjustments.min.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.dndbeyond.com/monsters/*",
+        "https://www.dndbeyond.com/magic-items/*",
+        "https://www.dndbeyond.com/spells/*",
+        "https://www.dndbeyond.com/equipment/*"
+      ],
+      "js": [
+        "assets/libs/jquery/jquery-3.5.1.min.js",
+        "assets/libs/jquery/jquery.adjustments.js",
+        "content/dndbeyond.com/detail.js"
+      ],
+      "css": ["assets/css/status.min.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.dndbeyond.com/encounter-builder"],
+      "js": [
+        "assets/libs/jquery/jquery-3.5.1.min.js",
+        "assets/libs/jquery/jquery.adjustments.js",
+        "content/dndbeyond.com/encounterBuilder/builder.js"
+      ],
+      "css": ["assets/css/status.min.css", "assets/css/adjustments.min.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.dndbeyond.com/sources/*"],
+      "js": [
+        "assets/libs/jquery/jquery-3.5.1.min.js",
+        "assets/libs/jquery/jquery.adjustments.js",
+        "content/dndbeyond.com/sources/toc.js"
+      ],
+      "css": ["assets/css/status.min.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.dndbeyond.com/sources/*"],
+      "js": [
+        "assets/libs/jquery/jquery-3.5.1.min.js",
+        "assets/libs/jquery/jquery.adjustments.js",
+        "content/dndbeyond.com/sources/page.js"
+      ],
+      "css": ["assets/css/status.min.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.dndbeyond.com/marketplace/*"],
+      "js": [
+        "assets/libs/jquery/jquery-3.5.1.min.js",
+        "assets/libs/jquery/jquery.adjustments.js",
+        "content/dndbeyond.com/marketplace.js"
+      ],
+      "css": ["assets/css/status.min.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "externally_connectable": {
+    "matches": [
+      "https://*.vtta.dev/user/profile",
+      "https://*.vtta.io/user/profile",
+      "https://vttassets.eu.ngrok.io/user/profile"
+    ]
+  },
+  "homepage_url": "https://www.vtta.io",
+  "host_permissions": [],
+  "incognito": "split",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAytSaZ5gNqsm/J35cOcVuU0NWt+LA830RT7Hn0Ub0Wt2F9588ffdSnavLCifGrWtpSVtK15nwqG+4nYrRCrA1Unw4LrQT8oAOxfTVsGUB7PFBqmTR2t8+qsaVhndLVx2fccBRZkW/j13xoePO6DXKS0Cmk0z9sd8C4pDJm9palp/LSNU+YNaURZ1XQHLcUuv/JOeh3Dm2AcFJ4qCy+P+TsQd0ZVY+GcJppGIMrLu3bOflMbFzYbLvsrMLoEdAfNRUznNnlvMHoDQKVHbb6k4YbjIVZiG6+wa/rm7dDuFp1GydBeKkNqQK2knXVsbpwFB3n3U52J2pCQvxBopwnti6jwIDAQAB",
+  "offline_enabled": false,
+  "options_ui": {
+    "page": "browser/options/index.html",
+    "open_in_tab": false
+  },
+  "permissions": ["activeTab", "storage", "scripting"],
+  "short_name": "VTTA.io DDB",
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/icons/*.png",
+        "assets/icons/*.svg",
+        "assets/img/position-chrome-tabs.gif",
+        "assets/css/*.css"
+      ],
+      "matches": ["https://www.dndbeyond.com/*"]
+    }
+  ]
 }

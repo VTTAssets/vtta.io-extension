@@ -34,41 +34,23 @@ const handler: MessageHandler = (
 
   const eventHandler = (event: CustomEvent) => {
     // get the message info from our stack
-    logger.info("Received reply " + MESSAGE_ID, event);
+    logger.debug("Received reply " + MESSAGE_ID, event);
     const handler = stack.find((handler) => handler.id === event.type);
 
     if (handler) {
       // call the handler and remove that listener from the stack
-      logger.info("Callback found, relaying reply...");
+      logger.debug("Callback found, relaying reply...");
       handler.callback(event.detail);
       stack = stack.filter((handler) => handler.id !== MESSAGE_ID);
       window.removeEventListener(handler.id, eventHandler);
     }
   };
 
-  logger.info("Creating Custom Event Listener: " + MESSAGE_ID);
+  logger.debug("Creating Custom Event Listener: " + MESSAGE_ID);
   // registering
   window.addEventListener(MESSAGE_ID, eventHandler);
 
-  /**
-   * If we haven't received a response with two seconds, we will clean up this message
-   */
-  // setTimeout((id: string) => {
-  //   const handler = stack.find((handler) => handler.id === id);
-  //   if (handler) {
-  //     // cancel the event
-  //     window.removeEventListener(id, eventHandler);
-  //     logger.warn("No response from vtta-ddb for message", data);
-  //     callback({
-  //       data: {
-  //         reason: "No response within 2s from Foundry",
-  //       },
-  //       success: false,
-  //     });
-  //   }
-  // }, 2000);
-
-  logger.info(
+  logger.debug(
     "Dispatching Custom Event " + CONFIG.messages.FVTT_CUSTOMEVENT_TAG
   );
   window.dispatchEvent(

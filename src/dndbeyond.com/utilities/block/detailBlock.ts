@@ -13,7 +13,7 @@ export default (env: Environment, pageInfo: PageInfo, itemData: ItemData) => {
   switch (itemData.status) {
     case "IMPORT":
       {
-        logger.info("Missing entity", itemData);
+        logger.debug("Missing entity", itemData);
 
         const status = infoPanel.add("Missing", "note");
         const importButton = infoPanel.add("Import", "button");
@@ -38,13 +38,13 @@ export default (env: Environment, pageInfo: PageInfo, itemData: ItemData) => {
       break;
     case "NOOP":
       {
-        logger.info("No Update necessary", itemData);
+        logger.debug("No Update necessary", itemData);
         infoPanel.add("Up to Date", "success");
       }
       break;
     case "UPDATE":
       {
-        logger.info("Updating entity", itemData);
+        logger.debug("Updating entity", itemData);
         const status = infoPanel.add("Update available", "warning");
         Parser.entity
           .process(

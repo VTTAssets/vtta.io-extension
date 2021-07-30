@@ -2,8 +2,8 @@ export default class ParsingError extends Error {
   message: string;
   result: any;
 
-  constructor(message: string, result: any) {
-    super(message);
+  constructor(slug: string, result: any) {
+    super(`${slug}`);
     this.name = "ParsingError";
     this.result = result;
   }

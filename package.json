@@ -1,6 +1,6 @@
 {
   "name": "vtta.io-extension-mv3",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "D&D Beyond Integration MV3",
   "main": "src/index.js",
   "author": "Sebastian Will <vttassets@gmail.com>",
