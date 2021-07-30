@@ -55,12 +55,6 @@ const LOG_FUNCTIONS = new Map([
  */
 const log = (logLevel: LogLevel, message: string, data?: any) => {
   Storage.local.get(["logLevel"]).then((SETTING) => {
-    console.log(
-      "Configured LogLevel: " +
-        SETTING.logLevel +
-        ", Message LogLevel: " +
-        logLevel
-    );
     if (logLevel >= SETTING.logLevel) {
       const coloredTitle = `%c[${LOG_PREFIX.get(
         logLevel

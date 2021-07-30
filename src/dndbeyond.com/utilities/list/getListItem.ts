@@ -1,3 +1,4 @@
+import logger from "Utilities/logging";
 import load from "../loadContent/index";
 import analyzeListItem from "./analyzeListItem";
 
@@ -8,6 +9,8 @@ import analyzeListItem from "./analyzeListItem";
  */
 export default async (element: HTMLElement): Promise<ItemData | null> => {
   const { name, url, slug, img, status } = await analyzeListItem(element);
+
+  logger.info("Received List item", { name, url, slug, img, status });
   let data = null;
 
   if (name && url) {

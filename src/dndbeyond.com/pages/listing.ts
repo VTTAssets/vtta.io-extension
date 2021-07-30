@@ -16,16 +16,18 @@ const main = async () => {
   const page = await Page.initialize("LISTING");
   if (!page) return;
 
-  logger.info("Page Information", page);
+  logger.debug("Page Information", page);
 
   // Manual or automatic processing of entities
   switch (page.env.processingMode) {
     case "PROCESSING_MODE_AUTOMATIC":
       {
         const step = page.env.batch;
-        logger.info("Processing Mode: AUTO");
+        logger.debug("Processing Mode: AUTO");
         let status = StatusDisplay();
         let entities = await getListItems();
+
+        logger.info("Retrieved entities for list", entities);
 
         // Set up-to-date and unlicensed content as done
         let processedCount = entities.filter(
@@ -78,7 +80,7 @@ const main = async () => {
         );
 
         const importResult = await Tools.entity.import(successes);
-        logger.info("Import Result", importResult);
+        logger.debug("Import Result", importResult);
         if (importResult !== true) {
           status.add("Error importing the parsed entities!", "error");
         } else {
@@ -94,7 +96,7 @@ const main = async () => {
           successes.map((entity) => `/${entity.flags.vtta.id}`)
         );
 
-        logger.info("Processed the following URLs", processedUrls);
+        logger.debug("Processed the following URLs", processedUrls);
 
         if (failures.length) {
           status.add(
@@ -116,10 +118,14 @@ const main = async () => {
           processed: processedUrls,
         };
 
-        logger.info("Updating Batch", batchData);
+        logger.debug("Updating Batch", batchData);
 
         const batchStep = await Batch.update(batchData);
-        logger.info("Response from Batch Update", batchStep);
+        logger.debug("Response from Batch Update", batchStep);
+
+        // add an anti-bot-detection delay
+        await status.delay();
+
         if (batchStep.url) {
           // DEBUG: DISABLE GOING TO NEXT PAGE
           window.location.href = batchStep.url;
@@ -138,11 +144,11 @@ const main = async () => {
           status.complete(true);
         }
 
-        logger.info("Processing Mode: MANUAL");
+        logger.debug("Processing Mode: MANUAL");
         // observe the list for changes in the UI
         const observer = getListObserver(page.env);
         observer.subscribe((itemData: ItemData) => {
-          logger.info("Observer starts processing new block", itemData);
+          logger.debug("Observer starts processing new block", itemData);
         });
 
         // Add the ability to start a batch when it's the list start

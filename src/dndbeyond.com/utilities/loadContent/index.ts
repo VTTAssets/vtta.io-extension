@@ -1,3 +1,5 @@
+import logger from "../../../utilities/logging/index";
+
 // const general = async (dataUrl: string): Promise<string> => {
 //   const query = dataUrl.indexOf("/") !== 0 ? "/" + dataUrl : dataUrl;
 //   return new Promise((resolve, reject) => {
@@ -45,12 +47,19 @@
 
 export default async (dataUrl: string): Promise<string> => {
   return new Promise((resolve, reject) => {
+    logger.info("[LOADCONTENT] Retrieving content from " + dataUrl);
     const url = `https://www.dndbeyond.com${dataUrl}`;
     fetch(url)
       .then((response) => {
         if (response.ok) {
           return response.text();
         } else {
+          logger.warn(
+            "[LOADCONTENT] Error retrieving content from " +
+              dataUrl +
+              ": HTTP Error " +
+              response.status
+          );
           throw response.status;
         }
       })
@@ -59,6 +68,7 @@ export default async (dataUrl: string): Promise<string> => {
           body.indexOf("ddb-blocked-content") !== -1 ||
           body.indexOf("/marketplace") !== -1
         ) {
+          logger.debug("[LOADCONTENT] Unlicensed content: " + dataUrl);
           return reject(403);
         }
 
@@ -69,12 +79,15 @@ export default async (dataUrl: string): Promise<string> => {
           moreInfo = moreInfo.replace(/\r?\n\s*|\r\s*/g, "");
           resolve(moreInfo);
         } else {
-          console.log(
+          console.warn(
             `${dataUrl}: Unable to retrieve more-info, skipping analysis...`
           );
           reject(400);
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.error("[LOADCONTENT] Unexpected error: ", error);
+        reject(400);
+      });
   });
 };

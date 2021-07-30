@@ -8,21 +8,7 @@ const Status = (title: string) => {
   <div class="body">
     <div class="messages"></div>
   </div>`;
-  //  <div class="buttons">
-  //     <div id="cancel-batch" class="vtta basic-button"><img src="chrome-extension://${chrome.runtime.id}/assets/icons/vtta.io-s-32x32.png">Cancel Batch</div>
-  //  </div>
   $("body").prepend(container);
-
-  // $(container)
-  //   .find("#cancel-batch")
-  //   .on("click", (event) => {
-  //     event.preventDefault();
-  //     // stopping the batch
-  //     Batch.stop().then((redirect: string) => {
-  //       const redirectUrl = new URL(redirect, document.URL).href;
-  //       window.location.href = redirectUrl;
-  //     });
-  //   });
 
   /**
    * Adds a message to the message panel
@@ -69,7 +55,7 @@ const Status = (title: string) => {
       );
       console.log("Timer options: ", options);
       let abortButton;
-      if (options.abortable) {
+      if (options && options.abortable) {
         abortButton = `<div id="ABORT_IMPORT" style="margin-left: 2rem; display: flex; justify-content: center; align-items: center; background-color: #c80f0f; color: white;" class="ui basic-button vtta"><span>Abort</span></div>`;
         $(element).append(abortButton);
       }
@@ -78,12 +64,18 @@ const Status = (title: string) => {
 
       let interval = setInterval(() => {
         count++;
-        let percent = Math.round((100 / seconds) * count);
+        let percent =
+          count === seconds
+            ? 100
+            : Math.min(100, Math.ceil(100 / seconds) * count);
         $(element).find(".tick").css("width", `${percent}%`);
 
         if (count === seconds) {
-          clearInterval(interval);
-          resolve(true);
+          const ANIMATION_DURATION = 1;
+          setTimeout(() => {
+            clearInterval(interval);
+            resolve(true);
+          }, ANIMATION_DURATION);
         }
       }, 1000);
 
@@ -97,6 +89,10 @@ const Status = (title: string) => {
         });
       }
     });
+  };
+
+  const delay = (seconds = 3) => {
+    return timer("Cleaning up...", seconds, { abortable: false });
   };
 
   const createCounter = (
@@ -118,7 +114,9 @@ const Status = (title: string) => {
     );
     $("body").find("div.vtta.statusBar div.messages").append(element);
 
-    let percent = count ? Math.round((100 / target) * count) : 0;
+    let percent =
+      count === target ? 100 : Math.min(100, Math.ceil(100 / target) * count);
+    //let percent = count ? Math.round((100 / target) * count) : 0;
     $(element).find(".tick").css("width", `${percent}%`);
     return id;
   };
@@ -129,7 +127,9 @@ const Status = (title: string) => {
     const currentCount = parseInt($(div).attr("data-count"));
     if (count === null) count = currentCount + 1;
     $(div).attr("data-count", count);
-    let percent = Math.min(100, count ? Math.round((100 / target) * count) : 0);
+    let percent =
+      count === target ? 100 : Math.min(100, Math.ceil(100 / target) * count);
+    //let percent = Math.min(100, count ? Math.round((100 / target) * count) : 0);
     $(div).find(".tick").css("width", `${percent}%`);
   };
 
@@ -204,6 +204,7 @@ const Status = (title: string) => {
 
   return {
     timer,
+    delay,
     add,
     remove,
     edit,

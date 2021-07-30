@@ -17,7 +17,7 @@ const main = async () => {
     case "PROCESSING_MODE_AUTOMATIC":
       {
         const step = page.env.batch;
-        logger.info("Processing Mode: AUTO");
+        logger.debug("Processing Mode: AUTO");
         let itemData = await getDetailItem();
 
         let status = StatusDisplay();
@@ -50,16 +50,18 @@ const main = async () => {
           status.counter.update(statusCounter, ++processedCount);
         }
         // Update the batch with all processed URLs
-        Batch.update({
+        const batchStep = await Batch.update({
           status: "OK",
           next: null,
           processed: [new URL(document.URL).pathname],
-        }).then((batchStep) => {
-          if (batchStep.url) {
-            // DEBUG: DISABLE GOING TO NEXT PAGE
-            window.location.href = batchStep.url;
-          }
         });
+        // add an anti-bot-detection delay
+        await status.delay(1);
+
+        if (batchStep.url) {
+          // DEBUG: DISABLE GOING TO NEXT PAGE
+          window.location.href = batchStep.url;
+        }
       }
       break;
     case "PROCESSING_MODE_MANUAL":

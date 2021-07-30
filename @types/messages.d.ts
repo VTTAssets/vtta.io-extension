@@ -22,13 +22,6 @@ interface Messages {
   clear: () => boolean;
 }
 
-// interface Parser {
-//   element: Node;
-//   permissions: string[];
-//   supplement: any;
-//   messages: Message;
-// }
-
 interface MessagesOptions {
   position: "prepend" | "append";
 }

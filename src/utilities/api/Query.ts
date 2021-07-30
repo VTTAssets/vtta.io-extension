@@ -1,5 +1,32 @@
 import logger from "../logging/index";
 
+const doFetch = async (url: string, request: RequestInit) => {
+  const RETRIES = 3;
+  let tries = 0;
+
+  let response: Response;
+  do {
+    tries++;
+    response = <Response>await fetch(url, request);
+    if (!response.ok) {
+      logger.warn(`[FETCH] ${url}, #${tries} failed: ${response.status}`);
+    }
+  } while (!response.ok && tries < RETRIES);
+
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  } else {
+    throw new Error(
+      "Three failures to request " +
+        url +
+        " (Status: " +
+        response.statusText +
+        ")"
+    );
+  }
+};
+
 const createRequest = (
   requestType: "GET" | "POST",
   bearer?: string,
@@ -22,62 +49,42 @@ const createRequest = (
   return request;
 };
 
-const handleErrors = (response: Response) => {
-  if (!response.ok) {
-    //logger.error("Response is not okay", response);
-    throw Error(response.statusText);
-  }
-  return response;
-};
-
 const Query = (hostname: string, token: string): QueryInterface => {
   logger.debug(`[QUERY:Init] ${hostname}, auth: ${token}`);
   return {
-    get: (url: string): Promise<any> => {
-      const query = url.indexOf("/") === 0 ? url : "/" + url;
-      return new Promise((resolve, reject) => {
-        // creating the request
-        const request = createRequest("GET", token);
+    // get: async (url: string): Promise<any> => {
+    get: async (url: string): Promise<any> => {
+      const query =
+        url.indexOf("/") === 0 ? `${hostname}${url}` : `${hostname}/${url}`;
 
-        logger.debug("[GET] from " + hostname + query, request);
+      // creating the request
+      const request = createRequest("GET", token);
 
-        // executing the request, includes error handling
-        fetch(hostname + query, request)
-          .then(handleErrors)
-          .then((response) => {
-            return response.json();
-          })
-          .then((json) => resolve(json))
-          .catch((error) => {
-            console.error("Query failed");
-            console.error(error);
-            reject(error);
-          });
-      });
+      logger.debug("[GET] " + query);
+
+      // executing the request, includes error handling
+
+      try {
+        const json = await doFetch(query, request);
+        return json;
+      } catch (error) {
+        console.error("Request to " + query + "failed", error);
+      }
     },
-    post: (url: string, input: any): Promise<any> => {
-      logger.debug("[POST] " + url, input);
-      const query = url.indexOf("/") === 0 ? url : "/" + url;
-      return new Promise((resolve, reject) => {
-        // creating the request
-        const request = createRequest("POST", token, input);
+    post: async (url: string, input: any): Promise<any> => {
+      const query =
+        url.indexOf("/") === 0 ? `${hostname}${url}` : `${hostname}/${url}`;
+      logger.debug("[POST] " + query, input);
 
-        logger.debug("[POST] to " + hostname + query, request);
-        // executing the request, includes error handling
-        fetch(hostname + query, request)
-          .then(handleErrors)
-          .then((response) => {
-            logger.debug("RESPONSE", response);
-            return response.json();
-          })
-          .then((json) => {
-            logger.debug("JSON", json);
-            resolve(json);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      const request = createRequest("POST", token, input);
+
+      try {
+        const json = await doFetch(query, request);
+        console.log(json);
+        return json;
+      } catch (error) {
+        console.error("Request to " + query + "failed", error);
+      }
     },
   };
 };

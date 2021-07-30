@@ -95,7 +95,7 @@ const main = async () => {
           `<div style="display: flex; flex-direction: row">
             <div style="flex-grow: 1";><p>The importer will automatically load all relevant pages and process the information found.</p>
             <p><b>For best results</b>, bring both the Foundry VTT tab <b>and</b> this D&amp;D Beyond browser tab into the foreground, placing them next to each other.</p>
-            <p><b>For aborting a running batch</b> use the "Cancel Batch" button in the extension's popup menu. You will find it at the bottom right.</p></div>
+            <p><b>Aborting a batch</b> is possible from the extension's popup menu. You will find a red button labelled "Batch" in the menu bar.</p></div>
             <div style="flex-shrink: 1"><img src="chrome-extension://jkcgfhmpepgnjkjhgkfbengiopmbbhjj/assets/img/position-chrome-tabs.gif"></div></div>`,
           "note"
         );

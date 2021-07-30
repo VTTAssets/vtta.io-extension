@@ -11,6 +11,7 @@
     box-shadow: 0 0 0 0 rgba(255, 121, 63, 0);
   }
 }
+
 div.vtta.messageBar {
   display: flex;
   align-items: center;
@@ -140,7 +141,7 @@ div.vtta.statusBar {
 
       .message.note {
         border-radius: 5px;
-        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-info.svg);
+        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-info.png);
         background-color: rgb(194, 194, 0);
         color: black;
         padding: 10px;
@@ -153,10 +154,9 @@ div.vtta.statusBar {
 
       .message.error {
         border-radius: 5px;
-        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-error.svg);
+        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-error.png);
         background-color: #b00000;
         color: white;
-        font-weight: bold;
         padding: 10px;
         min-height: 90px;
         background-repeat: no-repeat;
@@ -168,7 +168,7 @@ div.vtta.statusBar {
       .message.success {
         border-radius: 5px;
         background-color: #b8b822;
-        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-success.svg);
+        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-success.png);
         color: black;
         padding: 10px;
         min-height: 90px;
@@ -181,14 +181,19 @@ div.vtta.statusBar {
       .message.pending {
         border-radius: 5px;
         padding: 10px;
+        background-image: url(chrome-extension://__MSG_@@extension_id__/assets/icons/icon-pending.png);
+        min-height: 90px;
         color: black;
-        background-color: b8b821;
+        background-color: #b8b821;
+        background-repeat: no-repeat;
+        background-size: 64px;
+        background-position: 10px 10px;
+        padding-left: 90px;
         -webkit-animation: rotating 2s linear infinite;
         -moz-animation: rotating 2s linear infinite;
         -ms-animation: rotating 2s linear infinite;
         -o-animation: rotating 2s linear infinite;
         animation: pulse-orange 2s infinite;
-        background-color: orange;
       }
 
       .timer {
@@ -217,7 +222,6 @@ div.vtta.statusBar {
           }
         }
         height: 24px;
-        background-color: yellow;
       }
     }
 
@@ -241,7 +245,6 @@ div.vtta.statusBar.error {
           }
         }
         height: 24px;
-        background-color: yellow;
       }
     }
   }

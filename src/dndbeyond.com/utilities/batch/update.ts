@@ -1,3 +1,4 @@
+import logger from "../../../utilities/logging/index";
 import load from "./load";
 import save from "./save";
 
@@ -8,9 +9,15 @@ const update = async (update: BatchUpdate): Promise<BatchStep> => {
       let batch = await load();
 
       if (Array.isArray(update.processed)) {
+        logger.debug(
+          "Updating batch, removing processed pages",
+          update.processed
+        );
+        logger.debug("Pages pre-update", batch.pages);
         batch.pages = batch.pages.filter(
           (url) => !update.processed.includes(url)
         );
+        logger.debug("Pages post-update", batch.pages);
       } else {
         batch.pages = batch.pages.filter((url) => url !== update.processed);
       }

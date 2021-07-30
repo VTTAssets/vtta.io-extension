@@ -51,17 +51,9 @@ export default async (element: HTMLElement): Promise<ItemDetails> => {
           const data = $(element).data();
 
           let icon = $(element).find("div.monster-icon > *, div.item-icon > *");
-          console.log("Icon: ");
-          console.log(icon);
 
           if (!icon) icon = $(element).find("img");
-          console.log("Icon #2 attempt: ");
-          console.log(icon);
           let img = extractImage(icon);
-          // if (img && img.indexOf("images/icons/item_types/") !== -1) {
-          //   // it's an generic icon, we will find a better suiting one in the parser. Hopefully.
-          //   img = null;
-          // }
           const url = `/${data.type}/${data.slug}/more-info`;
           result.url = url;
           result.slug = `${data.type}/${data.slug}`;

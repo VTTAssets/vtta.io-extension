@@ -58,15 +58,19 @@ const main = async () => {
     );
 
     if (result) {
-      Batch.update({
+      const batchStep = await Batch.update({
         status: "OK",
         processed: new URL(document.URL).pathname,
         next: getNextURL(),
-      }).then((batchStep) => {
-        if (batchStep.url) {
-          window.location.href = batchStep.url;
-        }
       });
+
+      // add an anti-bot-detection delay
+      await status.delay();
+
+      // continue
+      if (batchStep.url) {
+        window.location.href = batchStep.url;
+      }
     }
   }
 };

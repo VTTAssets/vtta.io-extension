@@ -1,3 +1,4 @@
+import logger from "../../../utilities/logging/index";
 import load from "./load";
 import save from "./save";
 
@@ -6,6 +7,8 @@ const add = async (pages: string[]): Promise<BatchStep> => {
 
   pages = pages.reverse();
 
+  logger.debug("Adding pages to batch", pages);
+  logger.debug("Batch pre-add", batch.pages);
   pages.forEach((page) => {
     if (!batch.pages.includes(page)) {
       batch.pages = [page, ...batch.pages];
@@ -13,6 +16,7 @@ const add = async (pages: string[]): Promise<BatchStep> => {
   });
 
   await save(batch);
+  logger.debug("Batch post-add", batch.pages);
 
   return {
     batchId: batch.batchId,
