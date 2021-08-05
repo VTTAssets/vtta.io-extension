@@ -23,7 +23,7 @@ const removeKeyFromManifest = (target) => {
 };
 
 targets.forEach((target) => {
-  removeKeyFromManifest(target);
+  if (target !== "chrome") removeKeyFromManifest(target);
 
   const targetFilename = path.resolve(
     DIST_PATH,

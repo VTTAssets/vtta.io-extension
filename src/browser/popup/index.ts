@@ -52,7 +52,8 @@ const init = async () => {
   const message: Message = {
     type: CONFIG.messages.ACTION,
   };
-  chrome.runtime.sendMessage(message, (response) => {
+
+  const initiateActionMessage = (response: MessageHandlerResponse) => {
     logger.debug("Response received from ACTION event", response);
 
     if (response.success) {
@@ -75,8 +76,9 @@ const init = async () => {
             updateConnectionStateButton("error");
             Note.display(
               "error",
-              "This is not a Foundry VTT server",
-              `<p>I can only connect to the currently active, ie. displayed browser tab. Bring your Foundry tab to the foreground and try again.</p>`,
+              "This is (probably) not a Foundry VTT server",
+              `<p>Based on your active's tab title, I think it's not a Foundry VTT server you are looking at. If I am mistaken, you can always use the red FVTT above to initiate the connection manually.
+              Otherwise, bring your Foundry tab to the foreground and try again and re-open this popup to try again.</p>`,
               10000
             );
         }
@@ -88,7 +90,9 @@ const init = async () => {
       ) {
       }
     }
-  });
+  };
+
+  chrome.runtime.sendMessage(message, initiateActionMessage);
 
   /**
    * Clearing the stored user profile
@@ -144,12 +148,25 @@ const init = async () => {
    * Bringing the FVTT tab into the foreground (if connected);
    */
   $("#connect-fvtt").on("click", async (event) => {
-    if (!$("#connect-fvtt").hasClass("green")) return;
-    const { target } = await Storage.local.get(["target"]);
+    const isConnected = $("#connect-fvtt").hasClass("green");
 
-    if (target) {
-      var updateProperties = { active: true };
-      chrome.tabs.update(target, updateProperties, (tab) => {});
+    if (isConnected) {
+      // bring the Foundry tab into the foreground
+      const { target } = await Storage.local.get(["target"]);
+
+      if (target) {
+        var updateProperties = { active: true };
+        chrome.tabs.update(target, updateProperties, (tab) => {});
+      }
+    } else {
+      const message: Message = {
+        type: CONFIG.messages.ACTION,
+        data: {
+          force: true,
+        },
+      };
+
+      chrome.runtime.sendMessage(message, initiateActionMessage);
     }
   });
 };

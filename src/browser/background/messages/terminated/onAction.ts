@@ -22,16 +22,19 @@ export const MESSAGE_TYPE = CONFIG.messages.ACTION;
  * Checks if the currently active tab is a FVTT tab, given it's title
  * @returns {null|chrome.tabs.Tab} The chrome tab, if it's probably the FVTT tab, or null
  */
-const isFoundryTabActive = async (): Promise<null | chrome.tabs.Tab> => {
+const isFoundryTabActive = async (
+  forceConnection: boolean
+): Promise<null | chrome.tabs.Tab> => {
   return new Promise((resolve) => {
     try {
       chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
         if (
-          tabs &&
-          tabs.length &&
-          tabs[0].title &&
-          tabs[0].title ===
-            "Foundry Virtual Tabletop • A Standalone Virtual Tabletop Application"
+          forceConnection ||
+          (tabs &&
+            tabs.length &&
+            tabs[0].title &&
+            tabs[0].title ===
+              "Foundry Virtual Tabletop • A Standalone Virtual Tabletop Application")
         ) {
           resolve(tabs[0]);
         } else {
@@ -82,7 +85,8 @@ const handler: MessageHandler = async (
     // or failure of the connection attempt, too
 
     // 2. Is the currently displayed tab a Foundry tab?
-    const tab = await isFoundryTabActive();
+    const forceConnection = data.data?.force === true;
+    const tab = await isFoundryTabActive(forceConnection);
     if (tab) {
       callback({
         success: false,
@@ -90,7 +94,6 @@ const handler: MessageHandler = async (
           message: "Connection initiated",
         },
       });
-      console.log("Foundry is active Tab");
       // inject the content script
       const injection = {
         target: { tabId: tab.id, allFrames: true },
