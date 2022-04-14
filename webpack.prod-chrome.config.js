@@ -86,7 +86,6 @@ const config = {
       patterns: [
         // { from: "key.pem", to: "" },
         { from: "config/chrome/manifest.json", to: "manifest.json" },
-        { from: "config/chrome/key.pem", to: "key.pem" },
         { from: "assets/css/*.min.css", to: "" },
         { from: "assets/libs/**/*", to: "" },
         { from: "assets/icons/**/*", to: "" },

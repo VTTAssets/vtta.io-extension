@@ -9,6 +9,13 @@ const parseEntity = async (
   supplement: Supplement,
   html: string
 ): Promise<any> => {
+  var urlslug = slug.replace(/(.*)\/([0-9]+-)(.*)/, function(s, type , id, name){ 
+    if (type === 'magic-items' && id != null){
+        return type + '/' + name; 
+    }
+    return s;
+  });
+
   const parser = await Parser(slug);
 
   if (!parser) throw new ParsingError(slug, "I don't know how to parse that.");
@@ -16,7 +23,7 @@ const parseEntity = async (
   let result;
   try {
     //const data = { content: html, name: supplement.name };
-    result = await parser.post(slug, { content: html, name: name });
+    result = await parser.post(urlslug, { content: html, name: name });
     logger.debug("Parse result for " + slug, [supplement, result]);
   } catch (error) {
     logger.error("Error /w API [POST]", result);
